@@ -8,8 +8,11 @@ namespace Organizer
     {
         public static void Main(string[] args)
         {
-            List<int> integers = generateRandomIntigerList(100000);
+            Console.WriteLine("Input the number of elements must the list must have:");
+            int listLenght = Convert.ToInt32(Console.ReadLine());
+            List<int> integers = generateRandomIntigerList(listLenght);
             ShowList("Generated List", integers);
+            
 
             ShiftHighestSort shiftHighestSort = new ShiftHighestSort();
 
@@ -18,19 +21,24 @@ namespace Organizer
             stopwatch.Start();
             List<int> integersSorted = shiftHighestSort.Sort(integers);
             stopwatch.Stop();
-            Console.WriteLine("Shift highest sort took  : {0}", stopwatch.Elapsed);
-
-            Console.WriteLine(IsSortedLowHigh(integersSorted) ? "List is sorted" : "List is not sorted");
+            
             ShowList("Sorted List", integersSorted);
             Console.WriteLine();
+            Console.WriteLine(IsSortedLowHigh(integersSorted) ? "List is sorted" : "List is not sorted");
+            Console.WriteLine("Shift highest sort took  : {0}", stopwatch.Elapsed);
+            Console.WriteLine();
+
 
             RotateSort rotateSort = new RotateSort();
+            Console.WriteLine("Start rotatesort");
+
+            stopwatch.Restart();
             stopwatch.Start();
             List<int> rotateSorted = rotateSort.Sort(integers);
             stopwatch.Stop();
-            Console.WriteLine("Rotate sort took         : {0}", stopwatch.Elapsed);
-            ShowList("Sorted List", rotateSorted);
             Console.WriteLine(IsSortedLowHigh(rotateSorted) ? "List is sorted" : "List is not sorted");
+            Console.WriteLine("Rotate sort took         : {0}", stopwatch.Elapsed);
+            
             
 
         }
@@ -46,9 +54,9 @@ namespace Organizer
         public static void ShowList(string label, List<int> theList)
         {
             int count = theList.Count;
-            if (count > 100)
+            if (count > 200)
             {
-                count = 300; // Do not show more than 300 numbers
+                count = 200; // Do not show more than 200 numbers
             }
             Console.WriteLine();
             Console.Write(label);

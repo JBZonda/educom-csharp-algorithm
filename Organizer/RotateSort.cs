@@ -30,11 +30,11 @@ namespace Organizer
         /// <param name="high">De index within this.array to stop with</param>
         private void SortFunction(int low, int high)
         {
+            // only sort if list has more than 2 items
             if (high - low >= 1) {
                 Partitioning(low, high);
             }
 
-            
         }
 
         /// 
@@ -49,52 +49,43 @@ namespace Organizer
             int splitPoint = rnd.Next(low, high);
             int splitValue = array[splitPoint];
 
-            List<int> smaller = new List<int>();
-            List<int> higher = new List<int>();
-
+            // put smaller numbers in front of the list and larger numbers at the end
             for (int i = low; i <= high; i++)
             {
                 if (array[i] > array[splitPoint])
                 {
-                    higher.Add(array[i]);
-                } else if (i == splitPoint) {
-                    splitValue = array[i];
-                }
-                else
+                    if (splitPoint > i)
+                    {
+                        MoveItemInList(i, high);
+                        splitPoint -= 1;
+                        i -= 1;
+                    }
+
+                }  else if (array[i] < array[splitPoint])
                 {
-                    smaller.Add(array[i]);
+                    if (splitPoint < i)
+                    {
+                        MoveItemInList(i, low);
+                        splitPoint += 1;
+                    }
                 }
+                
             }
 
-            int lowHigh = 0;
-            int highLow = 0;
 
-            int listItterator = 0;
-
-            for (int i = low; i <= high; i++)
-            {
-                if (i < smaller.Count + low)
-                {
-                    array[i] = smaller[listItterator];
-                    listItterator += 1;
-                } else if (i == smaller.Count + low)
-                {
-                    listItterator = 0;
-                    lowHigh = i - 1;
-                    array[i] = splitValue;
-                    highLow = i + 1;
-                }
-                else
-                {             
-                    array[i] = higher[listItterator];
-                    listItterator += 1;
-                }
-            }
-
-            SortFunction(low, lowHigh);
-            SortFunction(highLow, high);
+            // sort the front and back side of the list again
+            SortFunction(low, splitPoint-1);
+            SortFunction(splitPoint + 1, high);
 
 
         }
+
+        private void MoveItemInList(int indexItemToMove,int locationIndex)
+        {
+            int valueToMove = array[indexItemToMove];
+            array.RemoveAt(indexItemToMove);
+            array.Insert(locationIndex, valueToMove);
+        }
+
     }
 }
