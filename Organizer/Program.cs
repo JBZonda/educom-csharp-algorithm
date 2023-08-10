@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Organizer
 {
@@ -7,9 +8,31 @@ namespace Organizer
     {
         public static void Main(string[] args)
         {
-            // Press <F5> to run this code, when "Hello World!" appears in a black box, remove the line below and write your code below.
-            Console.WriteLine("Hello World!");
-            ShowList("Example of ShowList", new List<int>() { -33, 3, 2, 2, 3, 34, 34, 32, 1, 3, 5, 3, -22, -99, 33, -22, 11, 3, 33, 12, -2, -21, 4, 34, 22, 15, 34,-22 });
+            List<int> integers = generateRandomIntigerList(100000);
+            ShowList("Generated List", integers);
+
+            ShiftHighestSort shiftHighestSort = new ShiftHighestSort();
+
+            Stopwatch stopwatch = new Stopwatch();
+
+            stopwatch.Start();
+            List<int> integersSorted = shiftHighestSort.Sort(integers);
+            stopwatch.Stop();
+            Console.WriteLine("Shift highest sort took  : {0}", stopwatch.Elapsed);
+
+            Console.WriteLine(IsSortedLowHigh(integersSorted) ? "List is sorted" : "List is not sorted");
+            ShowList("Sorted List", integersSorted);
+            Console.WriteLine();
+
+            RotateSort rotateSort = new RotateSort();
+            stopwatch.Start();
+            List<int> rotateSorted = rotateSort.Sort(integers);
+            stopwatch.Stop();
+            Console.WriteLine("Rotate sort took         : {0}", stopwatch.Elapsed);
+            ShowList("Sorted List", rotateSorted);
+            Console.WriteLine(IsSortedLowHigh(rotateSorted) ? "List is sorted" : "List is not sorted");
+            
+
         }
 
 
@@ -40,5 +63,31 @@ namespace Organizer
             }
             Console.WriteLine();
         }
+
+        public static bool IsSortedLowHigh(List<int> list)
+        {
+
+            for (int i = 0; i < list.Count - 1; i++)
+            {
+                if (list[i] > list[i + 1])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public static List<int> generateRandomIntigerList(int length)
+        {
+            List<int> ints = new List<int>();
+            Random rnd = new Random();
+            for (int i = 0; i < length; i++)
+            {
+                ints.Add(rnd.Next(198) - 99);
+            }
+            return ints;
+        }
     }
+
+    
 }
