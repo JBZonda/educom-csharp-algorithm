@@ -9,7 +9,7 @@ namespace BornToMove
 {
     internal class DatabaseConect
     {
-        public List<Move> OpenSqlWithComand(String sql)
+        public List<Move> GetMoveWithSqlComand(String sql)
         {
             string connectionString = GetConnectionString();
             List<Move> moves = new List<Move>();
@@ -32,6 +32,19 @@ namespace BornToMove
             return moves;
 
         }
+
+        public void SaveWithSqlComand(String sql)
+        {
+            string connectionString = GetConnectionString();
+            using (SqlConnection connection = new SqlConnection())
+            {
+                connection.ConnectionString = connectionString;
+                connection.Open();
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
 
         static private string GetConnectionString()
         {
