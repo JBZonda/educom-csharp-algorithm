@@ -1,13 +1,14 @@
-﻿using System;
+﻿using BornToMove.DAL;
+using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BornToMove
 {
-    internal class DatabaseConect
+    public class DatabaseConect
     {
         public List<Move> GetMoveWithSqlComand(String sql)
         {
