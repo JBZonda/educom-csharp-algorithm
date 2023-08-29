@@ -29,17 +29,24 @@ namespace Organizer
             Console.WriteLine();
 
 
-            RotateSort rotateSort = new RotateSort();
+            var rotateSort = new RotateSort<int>();
             Console.WriteLine("Start rotatesort");
 
             stopwatch.Restart();
             stopwatch.Start();
-            List<int> rotateSorted = rotateSort.Sort(integers);
+            List<int> rotateSorted = rotateSort.Sort(integers, Comparer<int>.Default);
             stopwatch.Stop();
             Console.WriteLine(IsSortedLowHigh(rotateSorted) ? "List is sorted" : "List is not sorted");
             Console.WriteLine("Rotate sort took         : {0}", stopwatch.Elapsed);
-            
-            
+
+            Console.WriteLine("------------doublesort--------------------");
+            var rotateSortdouble = new RotateSort<double>();
+            var doubles = generateRandomDoubleList(listLenght);
+            var doublesSorted = rotateSortdouble.Sort(doubles, Comparer<double>.Default);
+            ShowList("doubles:", doubles);
+            ShowList("doubles sorted:", doublesSorted);
+
+
 
         }
 
@@ -51,7 +58,7 @@ namespace Organizer
         /// </summary>
         /// <param name="label">The label for this list</param>
         /// <param name="theList">The list to show</param>
-        public static void ShowList(string label, List<int> theList)
+        public static void ShowList<T>(string label, List<T> theList)
         {
             int count = theList.Count;
             if (count > 200)
@@ -94,6 +101,18 @@ namespace Organizer
                 ints.Add(rnd.Next(198) - 99);
             }
             return ints;
+        }
+
+
+        public static List<double> generateRandomDoubleList(int length)
+        {
+            List<double> doubles = new List<double>();
+            Random rnd = new Random();
+            for (int i = 0; i < length; i++)
+            {
+                doubles.Add(((double) rnd.Next(1980) - 990) / 10.0 );
+            }
+            return doubles;
         }
     }
 

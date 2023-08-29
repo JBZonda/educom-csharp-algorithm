@@ -38,9 +38,6 @@ namespace BornToMove.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SweatRate")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Move");
@@ -60,7 +57,7 @@ namespace BornToMove.DAL.Migrations
                     b.Property<double>("Rating")
                         .HasColumnType("float");
 
-                    b.Property<double>("Vote")
+                    b.Property<double?>("Vote")
                         .HasColumnType("float");
 
                     b.HasKey("Id");

@@ -8,9 +8,13 @@ namespace BornToMove
     {
         static void Main(string[] args)
         {
-            BuMove moveGiver = new BuMove();
-            BuMoveRating buMoveRating = new BuMoveRating();
-            MakeData(moveGiver, buMoveRating);
+            MoveContext context = new MoveContext();
+            BuMove buMove = new BuMove(context);
+            BuMoveRating buMoveRating = new BuMoveRating(context);
+            if (!buMove.dataExists()) {
+                SeedData(buMove, buMoveRating);
+            }
+            
 
             Console.WriteLine("U dient te bewegen");
             Console.WriteLine("Wilt u een sugestie? (Y/N)");
@@ -22,19 +26,20 @@ namespace BornToMove
             }
 
             Console.WriteLine();
+            int chosenMoveId = 0;
 
             if (sugestion.ToUpper() == "Y")
             {
-                moveGiver.WriteSugestions();
+                chosenMoveId = buMove.WriteSugestions().Id;
             }
             else if (sugestion.ToUpper() == "N")
             {
-                moveGiver.WriteList();
+                buMove.WriteList();
                 Console.WriteLine("Geef het nummer van uw gekozen beweging:");
-                int chosenMoveId = Convert.ToInt32(Console.ReadLine());
-                if (chosenMoveId > 0)
+                chosenMoveId = Convert.ToInt32(Console.ReadLine());
+                if (chosenMoveId > 0 && buMove.getMoveById(chosenMoveId) != null)
                 {
-                    moveGiver.WriteMoveById(chosenMoveId);
+                    buMove.WriteMoveById(chosenMoveId);
                 }
                 else
                 {
@@ -44,7 +49,7 @@ namespace BornToMove
                     {
                         name = Console.ReadLine();
                     }
-                    Move? move1 = moveGiver.getMoveByName(name);
+                    Move? move1 = buMove.getMoveByName(name);
                     if (move1 != null)
                     {
                         Console.WriteLine("Naam bestaat all:\n");
@@ -65,66 +70,61 @@ namespace BornToMove
                         {                           
                             Name = name,
                             Description = description,
-                            SweatRate = (int)sweatRate
                         };
-                        moveGiver.SaveMove(newMove);
+                        buMove.SaveMove(newMove);
 
-                        Console.WriteLine(moveGiver.getMoveByName(name).ToStringWhole());
+                        Console.WriteLine(buMove.getMoveByName(name).ToStringWhole());
                     }
-
-
-
 
                 }
             }
 
             Console.WriteLine("Beoordeling:");
-            int? rating = Convert.ToInt32(Console.ReadLine());
-            while (rating < 1 || rating > 5)
-            {
-                rating = Convert.ToInt32(Console.ReadLine());
-            }
+            double vote = Convert.ToDouble(Console.ReadLine());
+            while (vote < 1 || vote > 5) { vote = Convert.ToDouble(Console.ReadLine());}
 
             Console.WriteLine("Intensiteit:");
-            int? intensity = Convert.ToInt32(Console.ReadLine());
-            while (intensity < 1 || intensity > 5)
+            double intensity = Convert.ToDouble(Console.ReadLine());
+            while (intensity < 1 || intensity > 5){intensity = Convert.ToDouble(Console.ReadLine());}
+
+            MoveRating moveRating4 = new MoveRating()
             {
-                intensity = Convert.ToInt32(Console.ReadLine());
-            }
+                Move = buMove.getMoveById(chosenMoveId),
+                Rating = intensity,
+                Vote = vote
+            };
+            buMoveRating.saveRating(moveRating4);
+
+
         }
 
-        static private void MakeData(BuMove moveGiver, BuMoveRating buMoveRating)
+        static private void SeedData(BuMove moveGiver, BuMoveRating buMoveRating)
         {       
  
             Move move1 = new Move()
             {
-                Id=1,
                 Name = "Push up",
                 Description = "Ga horizontaal liggen op teentoppen en handen. Laat het lijf langzaam zakken" +
                 " tot de neus de grond bijna raakt. Duw het lijf terug nu omhoog tot de ellebogen bijna gestrekt" +
-                " zijn. Vervolgens weer laten zakken. Doe dit 20 keer zonder tussenpauzes.",
-                SweatRate = 3
+                " zijn. Vervolgens weer laten zakken. Doe dit 20 keer zonder tussenpauzes."
             };
-            moveGiver.SaveMove(move1);
+            move1 = moveGiver.SaveMove(move1);
 
             Move move2 = new Move()
             {
-                Id=2,
                 Name = "Planking",
-                Description = "Ga horizontaal liggen op teentoppen en onderarmen. Houdt deze positie 1 minuut vast.",
-                SweatRate = 3
+                Description = "Ga horizontaal liggen op teentoppen en onderarmen. Houdt deze positie 1 minuut vast."
             };
-            moveGiver.SaveMove(move2);
+            move2 = moveGiver.SaveMove(move2);
 
             Move move3 = new Move()
             {
-                Id=3,
                 Name = "Squat",
                 Description = "Ga staan met gestrekte armen. Zak door de knieën tot de billen de grond bijna" +
-                " raken. Ga weer volledig gestrekt staan. Herhaal dit 20 keer zonder tussenpauzes.",
-                SweatRate = 5
+                " raken. Ga weer volledig gestrekt staan. Herhaal dit 20 keer zonder tussenpauzes."
+                
             };
-            moveGiver.SaveMove(move3);
+            move3 = moveGiver.SaveMove(move3);
 
             MoveRating moveRating1 = new MoveRating()
             {

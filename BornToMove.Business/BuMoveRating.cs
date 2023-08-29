@@ -9,7 +9,13 @@ namespace BornToMove.Business
 {
     public class BuMoveRating
     {
-        MoveRatingCrud crud = new MoveRatingCrud();
+        MoveRatingCrud crud;
+ 
+
+        public BuMoveRating(MoveContext context)
+        {
+            this.crud = new MoveRatingCrud(context);
+        }
 
         public MoveRating saveRating(MoveRating rating)
         {

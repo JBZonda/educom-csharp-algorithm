@@ -17,7 +17,6 @@ namespace BornToMove.DAL
             builder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=BornToMove;Trusted_Connection=true;TrustServerCertificate=true;");
             base.OnConfiguring(builder);
         }
-
       
 
     }

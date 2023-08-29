@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +9,16 @@ namespace BornToMove.DAL
 {
     public class MoveCrud
     {
-        private MoveContext context = new MoveContext();
+        private MoveContext context;
+
+        public MoveCrud(MoveContext context)
+        {
+            this.context = context;
+        }
 
         public Move create(Move move)
         {
-            context.Move.Add(move);
+            var moveTE = context.Move.Add(move);
             context.SaveChanges();
             return move;
         }
@@ -38,7 +44,7 @@ namespace BornToMove.DAL
         }
 
         public List<Move> readAllMoves() { 
-            return context.Move.ToList();
+            return context.Move.Include("Ratings").ToList();
         }
 
     }

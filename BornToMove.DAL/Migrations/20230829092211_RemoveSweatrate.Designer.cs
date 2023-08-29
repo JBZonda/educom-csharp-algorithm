@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BornToMove.DAL.Migrations
 {
     [DbContext(typeof(MoveContext))]
-    [Migration("20230828120749_RatingTable2")]
-    partial class RatingTable2
+    [Migration("20230829092211_RemoveSweatrate")]
+    partial class RemoveSweatrate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,9 +41,6 @@ namespace BornToMove.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SweatRate")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Move");
@@ -63,7 +60,7 @@ namespace BornToMove.DAL.Migrations
                     b.Property<double>("Rating")
                         .HasColumnType("float");
 
-                    b.Property<double>("Vote")
+                    b.Property<double?>("Vote")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
@@ -76,10 +73,15 @@ namespace BornToMove.DAL.Migrations
             modelBuilder.Entity("BornToMove.DAL.MoveRating", b =>
                 {
                     b.HasOne("BornToMove.DAL.Move", "Move")
-                        .WithMany()
+                        .WithMany("Ratings")
                         .HasForeignKey("MoveId");
 
                     b.Navigation("Move");
+                });
+
+            modelBuilder.Entity("BornToMove.DAL.Move", b =>
+                {
+                    b.Navigation("Ratings");
                 });
 #pragma warning restore 612, 618
         }

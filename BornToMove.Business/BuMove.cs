@@ -9,13 +9,20 @@ namespace BornToMove
     public class BuMove
     {
 
-        MoveCrud moveCrud = new MoveCrud();
+        MoveCrud moveCrud;
 
-        public void WriteSugestions()
+        public BuMove (MoveContext context)
+        {
+            this.moveCrud = new MoveCrud(context);
+        }
+
+        public Move WriteSugestions()
         {
             List<Move> moves = moveCrud.readAllMoves();
             var random = new Random();
-            Console.WriteLine(moves[random.Next(moves.Count)].ToStringWhole());
+            Move pickedMove = moves[random.Next(moves.Count)];
+            Console.WriteLine(pickedMove.ToStringWhole());
+            return pickedMove;
         }
 
         public void WriteList() {
@@ -39,9 +46,18 @@ namespace BornToMove
             return moveCrud.readMovesByName(name);
         }
 
-        public void SaveMove(Move move){
-            moveCrud.create(move);
+        public Move SaveMove(Move move){
+            return moveCrud.create(move);
         }
 
+        public bool dataExists()
+        {
+            return moveCrud.readAllMoves().Count() != 0;
+        }
+
+        public Move? getMoveById(int id)
+        {
+            return moveCrud.readMovesById(id);
+        }
     }
 }

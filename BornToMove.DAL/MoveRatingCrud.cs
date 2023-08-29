@@ -8,7 +8,13 @@ namespace BornToMove.DAL
 {
     public class MoveRatingCrud
     {
-        private MoveContext context = new MoveContext();
+        private MoveContext context;
+       
+
+        public MoveRatingCrud(MoveContext context)
+        {
+            this.context = context;
+        }
 
         public MoveRating create(MoveRating rating)
         {

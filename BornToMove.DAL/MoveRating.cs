@@ -11,7 +11,7 @@ namespace BornToMove.DAL
         public int Id { get; init; }
         public Move? Move { get; set; }
         public double Rating { get; set; }  
-        public double Vote { get; set; }
+        public double? Vote { get; set; }
 
         public MoveRating()
         {
